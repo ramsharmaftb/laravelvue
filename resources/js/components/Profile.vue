@@ -6,7 +6,7 @@
                     <div class="card-header">Example Component</div>
 
                     <div class="card-body">
-                        I'm an example component.
+                       PROFILE component.
                     </div>
                 </div>
             </div>
@@ -16,7 +16,7 @@
 
 <script>
     export default {
-     mounted() {
+        mounted() {
             console.log('Component mounted.')
         }
     }
