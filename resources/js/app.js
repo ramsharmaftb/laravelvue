@@ -7,25 +7,68 @@
 require('./bootstrap');
 
 window.Vue = require('vue').default;
-
+import moment from 'moment';
 import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
+import { Form, HasError, AlertError } from 'vform'
 
+window.Form = Form;
+Vue.component(HasError.name, HasError)
+Vue.component(AlertError.name, AlertError)
+
+// Progress Bar 
+import VueProgressBar from 'vue-progressbar'
+
+//sweetalert2
+import Swal from 'sweetalert2'
+
+
+const toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.addEventListener('mouseenter', Swal.stopTimer)
+    toast.addEventListener('mouseleave', Swal.resumeTimer)
+  }
+})
+
+window.toast = toast; 
+
+
+//end sweetalert2
+//fire event
+
+let Fire = new Vue()
+window.Fire = Fire
+Vue.use(VueProgressBar, {
+  color: 'rgb(143, 255, 199)',
+  failedColor: 'red',
+  height: '2px'
+})
 
 let routes = [
     { path: '/dashboard', component: require('./components/Dashboard.vue').default },
     { path: '/profile', component: require('./components/Profile.vue').default },
     { path: '/users', component: require('./components/Users.vue').default }
-  ]
+  ];
 
   const router = new VueRouter({
       mode: 'history',
       linkExactActiveClass: "active",
     routes // short for `routes: routes`
-  })
+  });
   
+Vue.filter('upText',function(text){
+    return text.charAt(0).toUpperCase() + text.slice(1);
+});
 
+Vue.filter('dateFormat',function(created){
+  return moment(created).format('MMMM Do YYYY');
+});
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
