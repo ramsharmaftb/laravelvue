@@ -67,7 +67,20 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        $this->validate($request,[
+            'name' => 'required|string|max:30',
+            'email' => 'required|email|max:191|unique:users,email,'.$user->id,
+            'bio' => 'required|string|min:10|max:250',
+            'type' => 'required',
+            'password' => 'sometime|min:8',
+            
+        ]);
+
+        //update user
+        $user->update($request->all());
+        return ['message' => 'User Updated'];
     }
 
     /**
@@ -78,6 +91,9 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::findOrFail($id);
+        //delete user
+        $user->delete();
+        return ['message' => 'User Deleted'];
     }
 }

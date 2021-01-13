@@ -22,7 +22,7 @@ import VueProgressBar from 'vue-progressbar'
 
 //sweetalert2
 import Swal from 'sweetalert2'
-
+window.Swal = Swal;
 
 const toast = Swal.mixin({
   toast: true,
