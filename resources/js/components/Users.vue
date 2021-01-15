@@ -1,7 +1,10 @@
 <template>
   <div class="container">
     <br /><br />
-    <div class="row">
+    <div v-if="!$gate.isAdmin()">
+      <not-found></not-found>
+    </div>
+    <div class="row" v-if="$gate.isAdmin()">
       <div class="col-12">
         <div class="card">
           <div class="card-header">
@@ -232,7 +235,10 @@ export default {
       
     },
     loadUsers() {
-      axios.get("api/user").then(({ data }) => (this.users = data.data))
+      if(this.$gate.isAdmin()){
+
+        axios.get("api/user").then(({ data }) => (this.users = data.data))
+      }
     },
     createUser() {
       this.$Progress.start()

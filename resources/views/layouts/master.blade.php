@@ -55,7 +55,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="/img/profile.png" class="img-circle elevation-2" alt="User Image">
+          <img src="/img/profile/{{Auth::user()->photo}}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
           <a href="#" class="d-block">{{ Auth::user()->name }}</a>
@@ -76,6 +76,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   </p>
                 </router-link>
               </li>    
+              @can('isAdmin')
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-cogs"></i>
@@ -84,6 +85,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
+
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <router-link to="/users" class="nav-link">
@@ -93,6 +95,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </li>
             </ul>
           </li>
+          @endcan
           <li class="nav-item">
             <router-link to="/profile" class="nav-link">
               <i class="nav-icon fas fa-user-alt"></i>
@@ -145,7 +148,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 <!-- REQUIRED SCRIPTS -->
 
+@auth
 
+<script>
+  
+  window.user = @json(auth()->user());    
+  
+</script>
+
+@endauth
 <script src="/js/app.js"></script>
 </body>
 </html>

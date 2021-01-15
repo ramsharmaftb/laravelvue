@@ -13,9 +13,15 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 import { Form, HasError, AlertError } from 'vform'
 
+//importiung gate for ACL limited access
+import Gate from './Gate'
+Vue.prototype.$gate = new Gate(window.user)
+
 window.Form = Form;
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
+
+Vue.component('not-found',require('./components/NotFound.vue').default)
 
 // Progress Bar 
 import VueProgressBar from 'vue-progressbar'
@@ -49,6 +55,8 @@ Vue.use(VueProgressBar, {
   failedColor: 'red',
   height: '2px'
 })
+
+
 
 let routes = [
     { path: '/dashboard', component: require('./components/Dashboard.vue').default },

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Intervention\Image\ImageManagerStatic as Image;
 
 
 class UserController extends Controller
@@ -20,6 +21,45 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function profile(){
+        return auth('api')->user();
+    } 
+
+    public function updateProfile(Request $request){
+        
+        $user = auth('api')->user();
+        $this->validate($request,[
+            'name' => 'required|string|max:30',
+            'email' => 'required|email|max:191|unique:users,email,'.$user->id,
+            'bio' => 'required|string|min:10|max:250',
+            'type' => 'required',
+            'password' => 'sometimes|required|min:8',
+            
+        ]);
+            $current_photo = $user->photo;
+            if($request->photo != $user->photo){
+                //for finding image extension with unique name
+                $name = time().'.'.explode('/', explode(':',substr($request->photo,0, strpos($request->photo,';')))[1])[1];
+                //saving file
+                Image::make($request->photo)->save(public_path('/img/profile/').$name);
+                $request->merge(['photo' => $name]);
+                
+                $userPhoto = public_path('img/profile/').$current_photo;
+                if(file_exists($userPhoto)){
+                    @unlink($userPhoto);
+                }
+            
+            }
+           
+                if(!empty($request->password)){
+                    $request->merge(['password' => Hash::make($request['password'])]);
+                }
+            $user->update($request->all());
+
+        return ['message' => 'success'];
+    } 
+
     public function index()
     {
         return User::latest()->paginate(10);
