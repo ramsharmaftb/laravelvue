@@ -9,7 +9,7 @@ require('./bootstrap');
 window.Vue = require('vue').default;
 import moment from 'moment';
 import VueRouter from 'vue-router'
-
+import pagination from 'laravel-vue-pagination'
 Vue.use(VueRouter)
 import { Form, HasError, AlertError } from 'vform'
 
@@ -22,6 +22,7 @@ Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
 
 Vue.component('not-found',require('./components/NotFound.vue').default)
+Vue.component('pagination', require('laravel-vue-pagination'))
 
 // Progress Bar 
 import VueProgressBar from 'vue-progressbar'
@@ -61,7 +62,8 @@ Vue.use(VueProgressBar, {
 let routes = [
     { path: '/dashboard', component: require('./components/Dashboard.vue').default },
     { path: '/profile', component: require('./components/Profile.vue').default },
-    { path: '/users', component: require('./components/Users.vue').default }
+    { path: '/users', component: require('./components/Users.vue').default },
+    { path: '*', component: require('./components/NotFound.vue').default },
   ];
 
   const router = new VueRouter({
@@ -98,5 +100,14 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 
 const app = new Vue({
     el: '#app',
-    router
+    router,
+    data:{
+        search: ''
+    },
+    methods:{
+      searchit:_.debounce( ()=>{
+        Fire.$emit('searching')
+      },500)
+    }
+
 });

@@ -60,6 +60,18 @@ class UserController extends Controller
         return ['message' => 'success'];
     } 
 
+    public function search(Request $request){
+        if(empty($request->q)){
+            return User::latest()->paginate(10);
+        }else{
+            $users = User::where('name' ,'Like',"%$request->q%")
+                         ->orWhere('email' ,'Like',"%$request->q%") 
+                         ->orWhere('bio' ,'Like',"%$request->q%") 
+                         ->orWhere('type' ,'Like',"%$request->q%")->paginate(10); 
+        return $users;
+         }
+    }
+
     public function index()
     {
         return User::latest()->paginate(10);

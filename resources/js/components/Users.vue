@@ -33,7 +33,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="user in users" :key="user.id">
+                <tr v-for="user in users.data" :key="user.id">
                   <td>{{ user.id }}</td>
                   <td>{{ user.name }}</td>
                   <td>{{ user.email }}</td>
@@ -56,6 +56,10 @@
             </table>
           </div>
           <!-- /.card-body -->
+              <div class="card-footer">
+                <pagination align="right" :show-disabled=true :data="users" @pagination-change-page="getResults"></pagination>
+
+              </div>
         </div>
         <!-- /.card -->
       </div>
@@ -182,6 +186,13 @@ export default {
     };
   },
   methods: {
+    // Our method to GET results from a Laravel endpoint
+		getResults(page = 1) {
+			axios.get('api/user?page=' + page)
+				.then(response => {
+					this.users = response.data;
+				});
+		},
     updateUser(){
        this.$Progress.start()
         this.form.put('api/user/'+this.form.id)
@@ -237,7 +248,7 @@ export default {
     loadUsers() {
       if(this.$gate.isAdmin()){
 
-        axios.get("api/user").then(({ data }) => (this.users = data.data))
+        axios.get("api/user").then(({ data }) => (this.users = data))
       }
     },
     createUser() {
@@ -261,6 +272,17 @@ export default {
     },
   },
   created() {
+    Fire.$on('searching',() => {
+      let query = this.$parent.search
+      axios.get('api/finduser?q='+query)
+      .then((data2) => {
+         this.users = data2.data
+        console.log(data2)
+     })
+      .catch(()=>{
+          console.log('wrooooong')
+      })
+    })
     this.loadUsers()
     Fire.$on("RefreshList", () => {
       this.loadUsers()

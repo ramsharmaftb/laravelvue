@@ -27,17 +27,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
     </ul>
 
     <!-- SEARCH FORM -->
-    <form class="form-inline ml-3">
+    <form @submit.prevent="" class="form-inline ml-3">
       <div class="input-group input-group-sm">
-        <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+        <input v-model="search" class="form-control form-control-navbar" @keyup="searchit" type="search" placeholder="Search" aria-label="Search">
         <div class="input-group-append">
-          <button class="btn btn-navbar" type="submit">
+          <button class="btn btn-navbar" @click="searchit" type="submit">
             <i class="fas fa-search"></i>
           </button>
         </div>
       </div>
-    </form>
 
+    </form>
     
   </nav>
   <!-- /.navbar -->
