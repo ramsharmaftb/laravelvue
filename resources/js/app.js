@@ -22,6 +22,7 @@ Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
 
 Vue.component('not-found',require('./components/NotFound.vue').default)
+Vue.component('side-bar',require('./components/Sidebar.vue').default)
 Vue.component('pagination', require('laravel-vue-pagination'))
 
 // Progress Bar 

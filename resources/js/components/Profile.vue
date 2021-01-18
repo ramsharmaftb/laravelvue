@@ -286,8 +286,11 @@
       },
       methods:{
               getProfilePhoto(){
-                let photo = (this.form.photo.length > 200 ) ? this.form.photo: "img/profile/"+this.form.photo
-                return photo
+                    let photo = "img/profile.png";
+                    if (this.form.photo) {
+                photo = (this.form.photo.length > 200 ) ? this.form.photo: "img/profile/"+this.form.photo
+                    }
+                    return photo
               },
               updateProfile(e){
 
@@ -308,6 +311,7 @@
                 this.form.put('api/profile/')
                 .then(() => {
                   $("#userModal").modal("hide")
+                    Fire.$emit('RefreshSidebar')
                     Swal.fire("Updated!", "Profile been Updated.", "success");
                    
                   this.$Progress.finish()
