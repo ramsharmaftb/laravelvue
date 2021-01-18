@@ -24,6 +24,7 @@
             <table class="table table-hover text-nowrap">
               <thead>
                 <tr>
+                  <th>S.NO</th>
                   <th>ID</th>
                   <th>Name</th>
                   <th>Email</th>
@@ -33,7 +34,8 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="user in users.data" :key="user.id">
+                <tr v-for="(user,index) in users.data" :key="user.id">
+                  <td>{{ (index+1) }}</td>
                   <td>{{ user.id }}</td>
                   <td>{{ user.name }}</td>
                   <td>{{ user.email }}</td>
@@ -173,6 +175,7 @@ export default {
   data() {
     return {
       editmode:false,
+      // current_page: {},
       users: {},
       form: new Form({
         id: "",
@@ -248,10 +251,11 @@ export default {
     loadUsers() {
       if(this.$gate.isAdmin()){
 
-        axios.get("api/user").then(({ data }) => (this.users = data))
+        axios.get("api/user").then(({ data}) => (this.users = data))
       }
     },
     createUser() {
+      
       this.$Progress.start()
       this.form
         .post("api/user")
@@ -272,6 +276,7 @@ export default {
     },
   },
   created() {
+    // this.$router.replace({ path: "users", query: {page: this.users.current_page } })
     Fire.$on('searching',() => {
       let query = this.$parent.search
       axios.get('api/finduser?q='+query)

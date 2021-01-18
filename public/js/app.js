@@ -2464,10 +2464,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       editmode: false,
+      // current_page: {},
       users: {},
       form: new Form({
         id: "",
@@ -2573,6 +2576,7 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this6 = this;
 
+    // this.$router.replace({ path: "users", query: {page: this.users.current_page } })
     Fire.$on('searching', function () {
       var query = _this6.$parent.search;
       axios.get('api/finduser?q=' + query).then(function (data2) {
@@ -66443,8 +66447,10 @@ var render = function() {
                   _vm._v(" "),
                   _c(
                     "tbody",
-                    _vm._l(_vm.users.data, function(user) {
+                    _vm._l(_vm.users.data, function(user, index) {
                       return _c("tr", { key: user.id }, [
+                        _c("td", [_vm._v(_vm._s(index + 1))]),
+                        _vm._v(" "),
                         _c("td", [_vm._v(_vm._s(user.id))]),
                         _vm._v(" "),
                         _c("td", [_vm._v(_vm._s(user.name))]),
@@ -66871,6 +66877,8 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
+        _c("th", [_vm._v("S.NO")]),
+        _vm._v(" "),
         _c("th", [_vm._v("ID")]),
         _vm._v(" "),
         _c("th", [_vm._v("Name")]),
